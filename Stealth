@@ -1,0 +1,61 @@
+-- Invisibility Script for Roblox
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Function to make the player invisible
+local function makeInvisible()
+    -- Check if the character exists
+    if not character then
+        warn("Character not found.")
+        return
+    end
+
+    -- Attempt to set transparency
+    local success, err = pcall(function()
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0.9 -- Set transparency to 90%
+            end
+        end
+    end)
+
+    -- Error handling
+    if not success then
+        warn("Error making player invisible: " .. err)
+    end
+end
+
+-- Function to reset invisibility
+local function resetInvisibility()
+    -- Check if the character exists
+    if not character then
+        warn("Character not found.")
+        return
+    end
+
+    -- Attempt to reset transparency
+    local success, err = pcall(function()
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 0 -- Reset transparency to 0%
+            end
+        end
+    end)
+
+    -- Error handling
+    if not success then
+        warn("Error resetting player visibility: " .. err)
+    end
+end
+
+-- Main loop to maintain invisibility
+while true do
+    makeInvisible()
+    wait(0.1) -- Adjust the wait time as necessary
+end
+
+-- Event listener for player reset or death
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    resetInvisibility()
+end)
